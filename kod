@@ -1,0 +1,287 @@
+def hasar_hesapla():
+    while True:
+        tur = input("Hasar türünü seçin (fiziksel/büyü): ").strip().lower()
+        if tur in ["fiziksel", "büyü"]:
+            break
+        print("Geçersiz seçim! Lütfen 'fiziksel' veya 'büyü' girin.")
+    
+    while True:
+        try:
+            hasar = float(input("Gelen hasarı girin: "))
+            break
+        except ValueError:
+            print("Geçersiz giriş! Lütfen bir sayı girin.")
+    
+    if tur == "fiziksel":
+        katsayi_tablosu = {
+            "kafaagir": 2, "kafakatman": 3, "kafahafif": 1,
+            "gogusagir": 5, "goguskatman": 6, "gogushafif": 4,
+            "kolagir": 2, "kolkatman": 3, "kolhafif": 1,
+            "bacakagir": 4, "bacakkatman": 5, "bacakhafif": 3,
+            "ayakagir": 2, "ayakkatman": 3, "ayakhafif": 1,
+            "kalkanagir": 6, "kalkankatman": 7, "kalkanhafif": 5,
+        }
+        
+        while True:
+            zırh_verileri = input("Zırh bilgilerini girin (örnek: kafaagir, kolkatman, gogushafif): ").replace(" ", "").split(",")
+            if all(z in katsayi_tablosu for z in zırh_verileri):
+                break
+            print("Geçersiz giriş! Lütfen doğru formatta yazın.")
+        
+        toplam_katsayi = sum(katsayi_tablosu[z] for z in zırh_verileri)
+        
+        while True:
+            try:
+                zırh_puani = max(1, float(input("Zırh puanını girin: ")))
+                break
+            except ValueError:
+                print("Geçersiz giriş! Lütfen bir sayı girin.")
+        
+        indirgenen_hasar = zırh_puani * toplam_katsayi
+    
+    elif tur == "büyü":
+        while True:
+            try:
+                direncler = list(map(float, input("Direnç yüzdelerini girin (örnek: 5,3.5,2): ").replace(',', '.').split()))
+                break
+            except ValueError:
+                print("Geçersiz giriş! Lütfen yalnızca sayılar girin.")
+        
+        indirgenen_hasar = hasar * (sum(direncler) / 100)
+    
+    kalan_hasar = max(0, hasar - indirgenen_hasar)
+    print(f"İndirgenen Hasar: {indirgenen_hasar:.2f}\nVerilen Hasar: {kalan_hasar:.2f}")
+
+def ksk_degeri_belirle(sure_tipi):
+    sure_tipleri = {
+        'ani': 0.8,
+        'seri': 1.0,
+        'orta': 1.1,
+        'uzun': 1.3,
+        'ritüel': 1.6
+    }
+    return sure_tipleri.get(sure_tipi, None)
+    
+
+def seviye_katsayisi_al():
+    while True:
+        try:
+            sk_girdi = input('Seviye katsayısını giriniz (sss, ss, s, a, b, c, d, e): ').strip().lower()
+            seviye_katsayilari = {
+                'sss': 1.8,
+                'ss': 1.6,
+                's': 1.4,
+                'a': 1.2,
+                'b': 1.0,
+                'c': 0.8,
+                'd': 0.6,
+                'e': 0.4
+            }
+            if sk_girdi in seviye_katsayilari:
+                return seviye_katsayilari[sk_girdi]
+            else:
+                raise ValueError("Geçersiz seviye katsayısı! Lütfen geçerli bir seviye katsayısı giriniz.")
+        except ValueError as ve:
+            print(ve)
+            print("Tekrar deneyin.")
+            
+def yanilgi_alani_katsayisi_al():
+    while True:
+        try:
+            ya_girdi = input('Yanılgı alanı katsayısını giriniz (tekil, ufak, orta, büyük, devasa): ').strip().lower()
+            yanilgi_alani_katsayilari = {
+                'tekil': 1.6,
+                'ufak': 1.3,
+                'orta': 1.0,
+                'büyük': 0.7,
+                'devasa': 0.4
+            }
+            if ya_girdi in yanilgi_alani_katsayilari:
+                return yanilgi_alani_katsayilari[ya_girdi]
+            else:
+                raise ValueError("Geçersiz yanılgı alanı katsayısı! Lütfen geçerli bir yanılgı alanı katsayısı giriniz.")
+        except ValueError as ve:
+            print(ve)
+            print("Tekrar deneyin.")
+
+
+def etki_alani_katsayisi_al():
+    while True:
+        try:
+            ea_girdi = input('Etki alanı katsayısını giriniz (tekil, ufak, orta, büyük, devasa): ').strip().lower()
+            etki_alani_katsayilari = {
+                'tekil': 1.6,
+                'ufak': 1.3,
+                'orta': 1.0,
+                'büyük': 0.7,
+                'devasa': 0.4
+            }
+            if ea_girdi in etki_alani_katsayilari:
+                return etki_alani_katsayilari[ea_girdi]
+            else:
+                raise ValueError("Geçersiz etki alanı katsayısı! Lütfen geçerli bir etki alanı katsayısı giriniz.")
+        except ValueError as ve:
+            print(ve)
+            print("Tekrar deneyin.")
+
+def mana_maliyeti_al():
+    while True:
+        try:
+            MM = float(input('Mana maliyeti giriniz: '))
+            if MM <= 0:
+                raise ValueError("Geçersiz mana maliyeti! Mana maliyeti sıfır veya negatif olamaz.")
+            return MM
+        except ValueError as ve:
+            print(ve)
+            print("Tekrar deneyin.")
+
+def zihinsel():
+    while True:
+        try:
+            SK = seviye_katsayisi_al()
+            MM = mana_maliyeti_al()
+            sure_tipi = input('Kullanım süresi tipini giriniz (ani, seri, orta, uzun, ritüel): ').strip().lower()
+            KSK = ksk_degeri_belirle(sure_tipi)
+            if KSK is None:
+                raise ValueError("Geçersiz süre tipi! Lütfen geçerli bir süre tipi giriniz.")
+            EKK = int(input('Etkilenen kişi sayısını giriniz: '))
+            if EKK == 0:
+                raise ValueError("Etkilenen kişi sayısı sıfır olamaz.")
+            AEG = float(input('Ana efsun gücü giriniz: '))
+            AEK = float(input('Ana efsun kabiliyeti giriniz: '))
+            H = SK * (MM / 10) * KSK * (((AEG * 0.5) + (AEK * 2.0)) / 2)
+            H1 = round(H, 0)
+            final_result = (H1 / EKK) / 2
+            print(round(final_result, 2), 'zihinsel hasar alındı.')
+            break
+        except ValueError as ve:
+            print(ve)
+            print("Tekrar deneyin.")
+
+def ilüzyon():
+    while True:
+        try:
+            SK = seviye_katsayisi_al()
+            MM = mana_maliyeti_al()
+            sure_tipi = input('Kullanım süresi tipini giriniz (ani, seri, orta, uzun, ritüel): ').strip().lower()
+            KSK = ksk_degeri_belirle(sure_tipi)
+            if KSK is None:
+                raise ValueError("Geçersiz süre tipi! Lütfen geçerli bir süre tipi giriniz.")
+            YAK = yanilgi_alani_katsayisi_al()
+            AEG = float(input('Ana efsun gücü giriniz: '))
+            AEK = float(input('Ana efsun kabiliyeti giriniz: '))
+            H = SK * (MM / 60) * YAK * KSK * (((AEG * 0.1) + (AEK * 1.0)) / 2)
+            H1 = round(H, 0)
+            H3 = H1 / 60
+            H2 = round(H3, 1)
+            print(H1, 'saniye İlüzyon süresi alındı.')
+            print(H2, 'dakika İlüzyon süresi alındı.')
+            break
+        except ValueError as ve:
+            print(ve)
+            print("Tekrar deneyin.")
+
+def hasar():
+    while True:
+        try:
+            SK = seviye_katsayisi_al()
+            MM = mana_maliyeti_al()
+            sure_tipi = input('Kullanım süresi tipini giriniz (ani, seri, orta, uzun, ritüel): ').strip().lower()
+            KSK = ksk_degeri_belirle(sure_tipi)
+            if KSK is None:
+                raise ValueError("Geçersiz süre tipi! Lütfen geçerli bir süre tipi giriniz.")
+            EAK = etki_alani_katsayisi_al()
+            AEG = float(input('Ana efsun gücü giriniz: '))
+            AEK = float(input('Ana efsun kabiliyeti giriniz: '))
+            H = SK * (MM / 40) * EAK * KSK * (((AEG * 1.4) + (AEK * 0.5)) / 2)
+            H1 = round(H, 0)
+            print(H1, 'HASARINIZ alındı.')
+            break
+        except ValueError as ve:
+            print(ve)
+            print("Tekrar deneyin.")
+
+def savunma():
+    while True:
+        try:
+            SK = seviye_katsayisi_al()
+            MM = mana_maliyeti_al()
+            sure_tipi = input('Kullanım süresi tipini giriniz (ani, seri, orta, uzun, ritüel): ').strip().lower()
+            KSK = ksk_degeri_belirle(sure_tipi)
+            if KSK is None:
+                raise ValueError("Geçersiz süre tipi! Lütfen geçerli bir süre tipi giriniz.")
+            EAK = etki_alani_katsayisi_al()
+            AEG = float(input('Ana efsun gücü giriniz: '))
+            AEK = float(input('Ana efsun kabiliyeti giriniz: '))
+            H = SK * (MM / 40) * EAK * KSK * (((AEG * 1.5) + (AEK * 0.4)) / 2)
+            H1 = round(H, 0)
+            final_result = H1 * 1.15
+            print(round(final_result, 2), 'HASAR SAVUNULDU.')
+            break
+        except ValueError as ve:
+            print(ve)
+            print("Tekrar deneyin.")
+
+def hesap_makinesi():
+    fonksiyonlar = {
+        'zihinsel': zihinsel,
+        'ilüzyon': ilüzyon,
+        'hasar': hasar,
+        'savunma': savunma
+    }
+
+    while True:
+        print("\nKullanılabilir fonksiyonlar: zihinsel, ilüzyon, hasar, savunma")
+        secim = input('Kullanmak istediğiniz fonksiyon adını girin (ana menü için "menü" yazın): ').lower()
+        
+        if secim == "menü":
+            return  # Ana menüye dön
+        
+        if secim in fonksiyonlar:
+            fonksiyonlar[secim]()
+            
+            # İşlem bittikten sonra ana menüye dönmek isteyip istemediğini sor
+            while True:
+                devam = input("\nBaşka bir işlem yapmak ister misiniz? (e/h): ").lower()
+                if devam == 'h':
+                    return  # Ana menüye dön
+                elif devam == 'e':
+                    break  # Aynı modülde devam et
+                else:
+                    print("Geçersiz seçim! Lütfen 'e' veya 'h' girin.")
+        else:
+            print("Geçersiz fonksiyon adı!")
+
+def main():
+    print("Hoşgeldiniz! Hangi modülü kullanmak istersiniz?")
+    print("1. Zırh Hesaplama (Zırh veya Zirh yazın)")
+    print("2. Hesap Makinesi (Hesap yazın)")
+    print("Çıkmak için 'çıkış' yazın")
+    
+    while True:
+        secim = input("\nSeçiminiz: ").strip().lower()
+        
+        if secim in ["zırh", "zirh"]:
+            hasar_hesapla()
+            # Zırh modülü bittikten sonra ana menüye dönmek isteyip istemediğini sor
+            while True:
+                devam = input("\nAna menüye dönmek ister misiniz? (e/h): ").lower()
+                if devam == 'e':
+                    break  # Ana menüye dön
+                elif devam == 'h':
+                    hasar_hesapla()  # Aynı modülde devam et
+                else:
+                    print("Geçersiz seçim! Lütfen 'e' veya 'h' girin.")
+                    
+        elif secim == "hesap":
+            hesap_makinesi()  # Bu fonksiyon içinde zaten ana menüye dönme seçeneği var
+            
+        elif secim == "çıkış":
+            print("Programdan çıkılıyor...")
+            break
+            
+        else:
+            print("Geçersiz seçim! Lütfen 'Zırh', 'Hesap' veya 'çıkış' yazın.")
+
+if __name__ == "__main__":
+    main()
